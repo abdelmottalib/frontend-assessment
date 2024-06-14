@@ -101,7 +101,6 @@ export default function Home() {
   };
 
   const handleImageClick = (index) => {
-    // console.log(gifImages[index].title);
     setSelectedImage(gifImages[index]);
     fetchData(gifImages[index].title.substring(0, 37), true);
   };
@@ -167,7 +166,8 @@ export default function Home() {
                 width={imageSize === "bigger" ? 400 : 200}
                 height={imageSize === "bigger" ? 400 : 200}
                 className="max-h-full"
-                unoptimized={true}
+                unoptimized
+                priority
               />
               <GifGrid
                 gifImages={relatedGifImages}

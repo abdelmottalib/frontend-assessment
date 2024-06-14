@@ -14,18 +14,25 @@ const GifGrid = ({
           key={index}
           className={`${
             related ? "w-[100px]" : "w-full"
-          } border border-gray-300 rounded-lg overflow-hidden cursor-pointer flex flex-col`}
+          } border border-gray-300 rounded-lg overflow-hidden cursor-pointer flex flex-col relative`}
           onClick={() => {
             related
               ? setSelectedImage(gifImages[index])
               : handleImageClick(index);
           }}
         >
-          <Image
+          {/* <img
             src={gif.images.fixed_width_small.url}
             alt={gif.title}
-            width={gif.images.fixed_width_small.width}
-            height={gif.images.fixed_width_small.height}
+            className={"w-full h-full object-cover"}
+          /> */}
+          <Image
+            src={gif.images.original.url}
+            alt={gif.title}
+            width={gif.images.original.width}
+            height={gif.images.original.height}
+            onError={(e) => {
+            }}
             className="object-cover w-full h-full"
             unoptimized
           />
