@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import GifGrid from "./componenets/GifGrid";
+import GifGrid from "./components/GifGrid";
 
 export default function Home() {
   const [gifImages, setGifImages] = useState([]);
@@ -10,6 +10,34 @@ export default function Home() {
   const [imageSize, setImageSize] = useState("original");
   const [relatedGifImages, setRelatedGifImages] = useState([]);
 
+  const fetchTrendingGIFs = async () => {
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY;
+      const response = await axios.get(`https://api.giphy.com/v1/gifs/trending`, {
+        params: {
+          api_key: apiKey,
+          limit: 25,
+          offset: 0,
+          lang: "en",
+          bundle: "messaging_non_clips",
+        },
+      });
+      const sortedData = response.data.data
+        .filter((gif) => gif.username.length > 0)
+        .sort(
+          (a, b) => new Date(a.import_datetime) - new Date(b.import_datetime)
+        );
+      setGifImages(sortedData);
+    } catch (error) {
+      console.error("Error fetching trending GIFs:", error);
+      setGifImages([]);
+    }
+  };
+  
+  useEffect(() => {
+    fetchTrendingGIFs();
+  }, []);
+  
   const fetchData = async (query, isRelated) => {
     try {
       const apiKey = process.env.NEXT_PUBLIC_GIPHY_API_KEY;
